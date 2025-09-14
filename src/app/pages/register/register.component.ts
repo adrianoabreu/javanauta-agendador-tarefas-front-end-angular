@@ -19,8 +19,8 @@ export class RegisterComponent {
 
   constructor(private formBuilder: FormBuilder){
     this.form = this.formBuilder.group({
-      fullName: ['',Validators.required],
-      email: [''],
+      fullName: ['',[Validators.required, Validators.minLength(3)]],
+      email: ['',[Validators.required, Validators.email]],
       password: ['']
     });   
   }
@@ -30,6 +30,11 @@ export class RegisterComponent {
   }
 
   submit(){
+
+    if(this.form.invalid){
+      this.form.markAllAsTouched()
+      return
+    }
     console.log("formulário submetido",this.form.value)
   }
 }
