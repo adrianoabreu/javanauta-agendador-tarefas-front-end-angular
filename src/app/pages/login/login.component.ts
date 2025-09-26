@@ -45,6 +45,12 @@ export class LoginComponent {
     });
   }
 
+  ngOnInit(): void {
+    if(this.authService.isLoggedIn()) {
+      this.router.navigate(['/tasks'])
+    }
+  }
+
   get emailErros(): string | null {
     const emailControl = this.form.get('email')
     if (emailControl?.hasError('required')) return 'A informação do e-mail é obrigatória'
@@ -73,7 +79,7 @@ export class LoginComponent {
       .subscribe({
         next: (response) => {
           this.authService.saveToken(response)
-          this.router.navigate(['/'])
+          this.router.navigate(['/tasks'])
         },
         error: (error) => {
           console.log("Erro ao entrar", error)
