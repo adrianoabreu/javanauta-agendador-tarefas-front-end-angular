@@ -79,6 +79,12 @@ export class LoginComponent {
       .subscribe({
         next: (response) => {
           this.authService.saveToken(response)
+          this.userService.getUserByEmail(response).subscribe({
+            next: (user) => {
+              this.authService.saveUser(user)
+            }
+          }
+          )
           this.router.navigate(['/tasks'])
         },
         error: (error) => {

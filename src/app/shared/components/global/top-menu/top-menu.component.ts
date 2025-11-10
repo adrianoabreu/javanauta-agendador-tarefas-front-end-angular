@@ -7,6 +7,7 @@ import { Router, RouterModule } from "@angular/router";
 import { Subscription } from 'rxjs';
 import { RouterStateService } from '../../../../core/router/router-state.service';
 import { AuthService } from '../../../../services/auth.service';
+import { UserService } from '../../../../services/user.service';
 
 @Component({
   selector: 'app-top-menu',
@@ -22,6 +23,7 @@ export class TopMenuComponent implements OnInit, OnDestroy {
 
   private routerService = inject(RouterStateService);
   private authService = inject(AuthService)
+  private userService = inject(UserService)
   private route = inject(Router)
 
   ngOnInit(): void {
@@ -44,6 +46,14 @@ export class TopMenuComponent implements OnInit, OnDestroy {
 
   get estaLogado(): boolean {
     return this.authService.isLoggedIn()
+  }
+
+  pegarInicialUsuario(): string {
+    const user = this.userService.getUser();
+    if(user && user.nome) {
+      return user.nome.charAt(0).toUpperCase();
+    }
+    return '?'
   }
 
   logout(): void {
