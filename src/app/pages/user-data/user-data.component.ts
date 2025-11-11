@@ -23,4 +23,11 @@ export class UserDataComponent {
       email: [{value: this.user?.email || '', disabled: true }],
   });
 
+  cadstrarEndereco() {
+    window.alert('Cadastrado')
+  }
+
+  cadstrarTelefone() {
+    window.alert('Cadastrado')
+  }
 }
