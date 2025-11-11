@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import {
   MAT_DIALOG_DATA,
@@ -13,19 +13,41 @@ import {
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 
+export interface DialogField {
+  name: string;
+  label: string;
+  validators?: any[]
+}
+
 interface DialogData {
   title: string
+  formConfig: DialogField[]
 }
 
 @Component({
   selector: 'app-modal-dialog',
-  imports: [MatFormFieldModule, MatInputModule, FormsModule, MatButtonModule, MatDialogContent, MatDialogActions],
+  imports: [MatFormFieldModule, MatInputModule, FormsModule, MatButtonModule, MatDialogContent, MatDialogActions, MatDialogTitle, ReactiveFormsModule],
   templateUrl: './modal-dialog.component.html',
   styleUrl: './modal-dialog.component.scss'
 })
 export class ModalDialogComponent {
+  readonly formBuilder = inject(FormBuilder)
   readonly dialogRef = inject(MatDialogRef<ModalDialogComponent>);
   readonly data = inject<DialogData>(MAT_DIALOG_DATA);
+
+  fields: DialogField[] = this.data.formConfig;
+
+  private buildControls(): Record<string, any> {
+    const controls: Record<string, any> = {}
+
+    this.fields.forEach(field => {
+      controls[field.name] = ['', field.validators || []]
+    })
+
+    return controls;
+  }
+
+  form: FormGroup = this.formBuilder.group(this.buildControls())
 
   onCancel(): void {
     this.dialogRef.close();
