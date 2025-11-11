@@ -1,13 +1,12 @@
 import { Component, inject } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { UserResponse, UserService } from '../../services/user.service';
-import { ModalDialogComponent } from '../../shared/components/modal-dialog/modal-dialog.component';
+import { DialogField, ModalDialogComponent } from '../../shared/components/modal-dialog/modal-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
-import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-user-data',
@@ -28,8 +27,17 @@ export class UserDataComponent {
   });
 
   cadstrarEndereco() {
+
+    const formConfig: DialogField[] = [
+      { name: 'cep', label: 'CEP', validators: [Validators.required] },
+      { name: 'rua', label: 'Rua' },
+      { name: 'numero', label: 'Numero' },
+      { name: 'complemento', label: 'Complemento' },
+      { name: 'cidade', label: 'Cidade' },
+      { name: 'estado', label: 'Estado' },
+    ]
     const dialogRef = this.dialog.open(ModalDialogComponent, {
-      data: { title: 'Adicionar Endereço'},
+      data: { title: 'Adicionar Endereço', formConfig },
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -38,8 +46,13 @@ export class UserDataComponent {
   }
 
   cadstrarTelefone() {
+    const formConfig: DialogField[] = [
+      { name: 'ddd', label: 'DDD', validators: [Validators.required] },
+      { name: 'numero', label: 'numero', validators: [Validators.required] },
+    ]
+
     const dialogRef = this.dialog.open(ModalDialogComponent, {
-      data: { title: 'Adicionar Telefone'},
+      data: { title: 'Adicionar Telefone', formConfig },
     });
 
     dialogRef.afterClosed().subscribe(result => {
