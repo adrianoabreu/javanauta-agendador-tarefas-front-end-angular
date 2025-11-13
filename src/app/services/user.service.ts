@@ -97,6 +97,13 @@ export class UserService {
     }
   }
 
+  savePhone(body: {numero: string, ddd: string}, token: string): Observable<any> {
+
+    const headers = new HttpHeaders({ Authorization: `${token}` })
+
+    return this.http.post<UserResponse>(`${this.apiUrl}/usuario/telefone`, body, { headers })
+  }
+
   getUser(): UserResponse | null {
     return this.user()
   }
