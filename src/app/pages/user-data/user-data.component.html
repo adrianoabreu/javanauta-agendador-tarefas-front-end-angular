@@ -18,6 +18,11 @@
         <button mat-flat-button (click)="cadstrarEndereco()">Adicionar Endereço</button>
 
         <h3>Telefones</h3>
-        <button mat-flat-button (click)="cadstrarTelefone()">Adicionar Telefone</button>
+        <mat-list>
+            @for(telefone of user?.telefones ?? []; track telefone.numero) {
+                <mat-list-item>{{telefone.ddd}} {{telefone.numero}}</mat-list-item>
+            }
+        </mat-list>
+        <button mat-flat-button (click)="cadastrarTelefone()">Adicionar Telefone</button>
     </mat-card-content>
 </mat-card>

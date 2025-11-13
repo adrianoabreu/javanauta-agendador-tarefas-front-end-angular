@@ -7,10 +7,12 @@ import { MatInputModule } from '@angular/material/input';
 import { UserResponse, UserService } from '../../services/user.service';
 import { DialogField, ModalDialogComponent } from '../../shared/components/modal-dialog/modal-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { AuthService } from '../../services/auth.service';
+import {MatListModule} from '@angular/material/list';
 
 @Component({
   selector: 'app-user-data',
-  imports: [MatButtonModule, MatCardModule, MatFormFieldModule, MatInputModule, ReactiveFormsModule],
+  imports: [MatButtonModule, MatCardModule, MatFormFieldModule, MatInputModule, ReactiveFormsModule, MatListModule],
   templateUrl: './user-data.component.html',
   styleUrl: './user-data.component.scss'
 })
@@ -18,6 +20,7 @@ export class UserDataComponent {
 
   private formBuilder = inject(FormBuilder);
   private userService = inject(UserService);
+  private authService = inject(AuthService);
   readonly dialog = inject(MatDialog);
 
   user = this.userService.getUser();
@@ -41,11 +44,15 @@ export class UserDataComponent {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
+      console.log('cadastro endereço', result);
     });
   }
 
-  cadstrarTelefone() {
+  cadastrarTelefone() {
+
+    const token = this.authService.getToken()
+    if(!token) return
+
     const formConfig: DialogField[] = [
       { name: 'ddd', label: 'DDD', validators: [Validators.required] },
       { name: 'numero', label: 'numero', validators: [Validators.required] },
@@ -56,7 +63,12 @@ export class UserDataComponent {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
+      if (result) {
+        this.userService.savePhone(result, token).subscribe({
+          next: () => console.log('Telefone cadastrado com sucesso', result),
+          error: () => console.log('Erro ao cadastrar telefone', result),
+        })
+      }
     });
   }
 }
