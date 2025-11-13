@@ -19,7 +19,7 @@
 
         <h3>Telefones</h3>
         <mat-list>
-            @for(telefone of user?.telefones ?? []; track telefone.numero) {
+            @for(telefone of user()?.telefones ?? []; track telefone.numero) {
                 <mat-list-item>{{telefone.ddd}} {{telefone.numero}}</mat-list-item>
             }
         </mat-list>
