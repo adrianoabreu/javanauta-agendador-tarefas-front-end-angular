@@ -23,10 +23,11 @@ export class UserDataComponent {
   private authService = inject(AuthService);
   readonly dialog = inject(MatDialog);
 
-  user = this.userService.getUser();
+  user = this.userService.user;
+  
   form = this.formBuilder.group({
-    nome: [{ value: this.user?.nome || '', disabled: true }],
-    email: [{ value: this.user?.email || '', disabled: true }],
+    nome: [{ value: this.user()?.nome || '', disabled: true }],
+    email: [{ value: this.user()?.email || '', disabled: true }],
   });
 
   cadstrarEndereco() {
