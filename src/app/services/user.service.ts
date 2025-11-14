@@ -29,22 +29,19 @@ interface UserRegisterPayload {
 export interface UserResponse {
   nome: string,
   email: string,
-  enderecos: [
-    {
+  enderecos: {
       rua: string,
       numero: 0,
       complemento: string,
       cidade: string,
       estado: string,
       cep: string
-    }
-  ] | null,
-  telefones: [
-    {
+    }[] | null,
+  telefones: {
+      id: number,
       numero: string,
       ddd: string
-    }
-  ] | null
+    }[] | null
 }
 
 export interface UserLoginPayload {
@@ -103,6 +100,19 @@ export class UserService {
     const headers = new HttpHeaders({ Authorization: `${token}` })
 
     return this.http.post<UserResponse>(`${this.apiUrl}/usuario/telefone`, body, { headers }).pipe(
+      switchMap(() => this.getUserByEmail(token)),
+      tap(user => {
+        this.setUser(user)
+        this.authService.saveUser(user)
+      })
+    )
+  }
+
+  updatePhone(id: number, body: { numero: string, ddd: string }, token: string): Observable<any> {
+
+    const headers = new HttpHeaders({ Authorization: `${token}` })
+
+    return this.http.put<UserResponse>(`${this.apiUrl}/usuario/telefone?id=${id}`, body, { headers }).pipe(
       switchMap(() => this.getUserByEmail(token)),
       tap(user => {
         this.setUser(user)

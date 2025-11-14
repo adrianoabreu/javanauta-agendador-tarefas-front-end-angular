@@ -80,7 +80,7 @@ export class UserDataComponent {
     });
   }
 
-  editarTelefone(telefone: {ddd: string; numero: string}) {
+  editarTelefone(telefone: {id: number, ddd: string; numero: string}) {
 
     const token = this.authService.getToken()
     if(!token) return
@@ -94,13 +94,13 @@ export class UserDataComponent {
       data: { title: 'Editar Telefone', formConfig },
     });
 
-/*    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.userService.savePhone(result, token).subscribe({
-          next: () => console.log('Telefone cadastrado com sucesso', result),
-          error: () => console.log('Erro ao cadastrar telefone', result),
+        this.userService.updatePhone(telefone.id ,result, token).subscribe({
+          next: () => console.log('Telefone editado com sucesso', result),
+          error: () => console.log('Erro ao editar telefone', result),
         })
       }
-    }); */
+    }); 
   }
 }
