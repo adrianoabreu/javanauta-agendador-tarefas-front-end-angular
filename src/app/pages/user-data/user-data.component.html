@@ -15,6 +15,28 @@
         </form>
 
         <h3>Endereços</h3>
+        <mat-list>
+            @for(endereco of user()?.enderecos ?? []; track endereco.id) {
+            <div class="item-wrapper">
+                <div class="item-text">
+                    <mat-list-item>{{endereco.rua}}, {{endereco.numero}}
+                        @if(endereco.complemento) {<span>{{endereco.complemento}}</span>}
+                        {{endereco.cidade}}, {{endereco.estado}},
+                        {{endereco.cep}}
+                    </mat-list-item>
+                </div>
+                <div class="item-action">
+                    <button mat-icon-button (click)="editarEndereco(endereco)">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                    <button mat-icon-button>
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </div>
+            </div>
+
+            }
+        </mat-list>
         <button mat-flat-button (click)="cadstrarEndereco()">Adicionar Endereço</button>
 
         <h3>Telefones</h3>
@@ -28,7 +50,7 @@
                     <button mat-icon-button (click)="editarTelefone(telefone)">
                         <mat-icon>edit</mat-icon>
                     </button>
-                    <button mat-icon-button >
+                    <button mat-icon-button>
                         <mat-icon>delete</mat-icon>
                     </button>
                 </div>
