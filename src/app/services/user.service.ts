@@ -11,7 +11,7 @@ interface UserRegisterPayload {
   enderecos?: [
     {
       rua: string,
-      numero: 0,
+      numero: number,
       complemento: string,
       cidade: string,
       estado: string,
@@ -31,7 +31,7 @@ export interface UserResponse {
   email: string,
   enderecos: {
       rua: string,
-      numero: 0,
+      numero: number,
       complemento: string,
       cidade: string,
       estado: string,
