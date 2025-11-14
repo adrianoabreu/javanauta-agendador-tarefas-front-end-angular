@@ -16,6 +16,7 @@ import { MatInputModule } from '@angular/material/input';
 export interface DialogField {
   name: string;
   label: string;
+  value?: string;
   validators?: any[]
 }
 
@@ -41,7 +42,7 @@ export class ModalDialogComponent {
     const controls: Record<string, any> = {}
 
     this.fields.forEach(field => {
-      controls[field.name] = ['', field.validators || []]
+      controls[field.name] = [ field.value ?? '', field.validators || []]
     })
 
     return controls;
