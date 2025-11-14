@@ -80,7 +80,7 @@ export class UserDataComponent {
     });
   }
 
-  editarTelefone(telefone: {id: number, ddd: string; numero: string}) {
+  editarTelefone(telefone: {id: number, ddd: string, numero: string}) {
 
     const token = this.authService.getToken()
     if(!token) return
