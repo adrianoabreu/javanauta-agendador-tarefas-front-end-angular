@@ -16,7 +16,8 @@ import { MatInputModule } from '@angular/material/input';
 export interface DialogField {
   name: string;
   label: string;
-  value?: string;
+  value?: string | number;
+  type?: string;
   validators?: any[]
 }
 
