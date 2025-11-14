@@ -9,10 +9,17 @@ import { DialogField, ModalDialogComponent } from '../../shared/components/modal
 import { MatDialog } from '@angular/material/dialog';
 import { AuthService } from '../../services/auth.service';
 import {MatListModule} from '@angular/material/list';
+import {MatIconModule} from '@angular/material/icon';
 
 @Component({
   selector: 'app-user-data',
-  imports: [MatButtonModule, MatCardModule, MatFormFieldModule, MatInputModule, ReactiveFormsModule, MatListModule],
+  imports: [MatButtonModule, 
+    MatCardModule, 
+    MatFormFieldModule, 
+    MatInputModule, 
+    ReactiveFormsModule, 
+    MatListModule, 
+    MatIconModule],
   templateUrl: './user-data.component.html',
   styleUrl: './user-data.component.scss'
 })
@@ -71,5 +78,29 @@ export class UserDataComponent {
         })
       }
     });
+  }
+
+  editarTelefone(telefone: {ddd: string; numero: string}) {
+
+    const token = this.authService.getToken()
+    if(!token) return
+
+    const formConfig: DialogField[] = [
+      { name: 'ddd', label: 'DDD', value: telefone.ddd, validators: [Validators.required] },
+      { name: 'numero', label: 'numero', value: telefone.numero, validators: [Validators.required] },
+    ]
+
+    const dialogRef = this.dialog.open(ModalDialogComponent, {
+      data: { title: 'Editar Telefone', formConfig },
+    });
+
+/*    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.userService.savePhone(result, token).subscribe({
+          next: () => console.log('Telefone cadastrado com sucesso', result),
+          error: () => console.log('Erro ao cadastrar telefone', result),
+        })
+      }
+    }); */
   }
 }

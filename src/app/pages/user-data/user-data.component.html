@@ -20,7 +20,20 @@
         <h3>Telefones</h3>
         <mat-list>
             @for(telefone of user()?.telefones ?? []; track telefone.numero) {
-                <mat-list-item>{{telefone.ddd}} {{telefone.numero}}</mat-list-item>
+            <div class="item-wrapper">
+                <div class="item-text">
+                    <mat-list-item>{{telefone.ddd}} {{telefone.numero}}</mat-list-item>
+                </div>
+                <div class="item-action">
+                    <button mat-icon-Button (click)="editarTelefone(telefone)">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                    <button mat-icon-Button >
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </div>
+            </div>
+
             }
         </mat-list>
         <button mat-flat-button (click)="cadastrarTelefone()">Adicionar Telefone</button>

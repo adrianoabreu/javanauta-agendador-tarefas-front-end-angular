@@ -5,10 +5,15 @@
 
     .meus-dados-header {
         padding: 0 1rem;
+
         .meus-dados-header {
             padding-bottom: 1rem;
         }
     }
 
+    .item-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
 }
-
