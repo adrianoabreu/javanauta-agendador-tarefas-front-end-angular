@@ -30,18 +30,19 @@ export interface UserResponse {
   nome: string,
   email: string,
   enderecos: {
-      rua: string,
-      numero: number,
-      complemento: string,
-      cidade: string,
-      estado: string,
-      cep: string
-    }[] | null,
+    id: number,
+    rua: string,
+    numero: number,
+    complemento: string,
+    cidade: string,
+    estado: string,
+    cep: string
+  }[] | null,
   telefones: {
-      id: number,
-      numero: string,
-      ddd: string
-    }[] | null
+    id: number,
+    numero: string,
+    ddd: string
+  }[] | null
 }
 
 export interface UserLoginPayload {
@@ -93,6 +94,44 @@ export class UserService {
     } catch (error) {
       return null
     }
+  }
+
+  saveEndereco(body: {
+    rua: string,
+    numero: number,
+    complemento: string,
+    cidade: string,
+    estado: string,
+    cep: string
+  }, token: string): Observable<any> {
+    const headers = new HttpHeaders({ Authorization: `${token}` })
+
+    return this.http.post<UserResponse>(`${this.apiUrl}/usuario/endereco`, body, { headers }).pipe(
+      switchMap(() => this.getUserByEmail(token)),
+      tap(user => {
+        this.setUser(user)
+        this.authService.saveUser(user)
+      })
+    )
+  }
+
+  updateEndereco(id: number, body: {
+    rua: string,
+    numero: number,
+    complemento: string,
+    cidade: string,
+    estado: string,
+    cep: string
+  }, token: string): Observable<any> {
+    const headers = new HttpHeaders({ Authorization: `${token}` })
+
+    return this.http.put<UserResponse>(`${this.apiUrl}/usuario/endereco?id=${id}`, body, { headers }).pipe(
+      switchMap(() => this.getUserByEmail(token)),
+      tap(user => {
+        this.setUser(user)
+        this.authService.saveUser(user)
+      })
+    )
   }
 
   savePhone(body: { numero: string, ddd: string }, token: string): Observable<any> {
