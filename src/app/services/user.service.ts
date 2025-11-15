@@ -96,6 +96,10 @@ export class UserService {
     }
   }
 
+  getEnderecoByCep(cep: string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/usuario/endereco/${cep}`)
+  }
+
   saveEndereco(body: {
     rua: string,
     numero: number,
