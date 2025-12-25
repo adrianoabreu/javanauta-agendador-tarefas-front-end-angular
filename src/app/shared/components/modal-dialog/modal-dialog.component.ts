@@ -49,6 +49,7 @@ interface DialogData {
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [provideNativeDateAdapter()],
 })
+
 export class ModalDialogComponent {
   readonly formBuilder = inject(FormBuilder)
   readonly dialogRef = inject(MatDialogRef<ModalDialogComponent>);
