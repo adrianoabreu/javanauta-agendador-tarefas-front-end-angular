@@ -2,8 +2,8 @@ import { Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialog } from '@angular/material/dialog';
-import { AuthService } from '../../services/auth.service';
 import { DialogField, ModalDialogComponent } from '../../shared/components/modal-dialog/modal-dialog.component';
+import { TasksService } from '../../services/tasks.service';
 
 @Component({
   selector: 'app-tasks',
@@ -13,20 +13,10 @@ import { DialogField, ModalDialogComponent } from '../../shared/components/modal
 })
 export class TasksComponent {
 
-  mockBody = {
-    nomeTarefa: "string",
-    descricao: "string",
-    dataEvento: "2025-11-16T20:23:17.702Z"
-  }
-
-  private authService = inject(AuthService);
+  private tasksService = inject(TasksService)
   readonly dialog = inject(MatDialog);
 
   cadstrarTarefa() {
-
-    const token = this.authService.getToken()
-    if (!token) return
-
     const formConfig: DialogField[] = [
       { name: 'nomeTarefa', label: 'Nome da Tarefa' },
       { name: 'data', label: 'Data da Tarefa', type: 'date' },
@@ -41,26 +31,28 @@ export class TasksComponent {
       if (result) {
 
         const { data, tempo, ...resto } = result;
+
+        const formatterDateTime = (n: number) => n.toString().padStart(2, "0")
+
         const ano = data.getFullYear();
-        const mes = data.getMonth();
-        const dia = data.getDate();
+        const mes = formatterDateTime(data.getMonth() + 1);
+        const dia = formatterDateTime(data.getDate());
 
-        const hora = tempo.getHours();
-        const minuto = tempo.getMinutes();
-        const segundo = tempo.getSeconds();
+        const hora = formatterDateTime(tempo.getHours());
+        const minuto = formatterDateTime(tempo.getMinutes());
+        const segundo = formatterDateTime(tempo.getSeconds());
 
-        const dataEvento = new Date(ano, mes, dia, hora, minuto, segundo).toISOString()
+        const dataEvento = `${dia}-${mes}-${ano} ${hora}:${minuto}:${segundo}`
         
         const payload = {
           ...resto,
           dataEvento
         }
-
-        console.log("tarefa cadastrada", payload)
-        // this.userService.saveEndereco(result, token).subscribe({
-        //   next: () => console.log('Endereço cadastrado com sucesso', result),
-        //   error: () => console.log('Erro ao cadastrar endereço', result),
-        // })
+       
+        this.tasksService.createTask(payload).subscribe({
+          next: () => console.log('Tarefa cadastrada com sucesso', payload),
+          error: () => console.log('Erro ao cadastrar a tarefa', payload),
+        })
       }
     });
   }
