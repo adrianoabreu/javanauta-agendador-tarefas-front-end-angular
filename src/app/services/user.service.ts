@@ -55,7 +55,7 @@ export interface UserLoginPayload {
 })
 export class UserService {
 
-  private apiUrl = 'http://localhost:8083';
+  private apiUrl = 'http://localhost:8083'; //TODO: colocar esse valor num .ENV
 
   private jwtHelper = new JwtHelperService;
 
