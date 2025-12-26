@@ -3,10 +3,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogField, ModalDialogComponent } from '../../shared/components/modal-dialog/modal-dialog.component';
-import { TasksService } from '../../services/tasks.service';
+import { TasksPayload, TasksService } from '../../services/tasks.service';
 import {ChangeDetectionStrategy, signal} from '@angular/core';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatIconModule} from '@angular/material/icon';
+import { ConfirmModalDialogComponent } from '../../shared/components/confirm-modal-dialog/confirm-modal-dialog.component';
 
 @Component({
   selector: 'app-tasks',
@@ -77,7 +78,7 @@ export class TasksComponent {
     });
   }
 
-  editarTarefa(tarefa: any) {
+  editarTarefa(tarefa: TasksPayload) {
 
     const {dataFormatada, tempoFormatado} = this.normalizarDataEvento(tarefa.dataEvento);
 
@@ -117,6 +118,27 @@ export class TasksComponent {
         this.tasksService.editTask(tarefa.id, payload).subscribe({
           next: () => console.log('Tarefa editada com sucesso', payload),
           error: () => console.log('Erro ao editar a tarefa', payload),
+        })
+      }
+    });
+  }
+
+  deletarTarefa(tarefa: string) {
+
+   const dialogRef = this.dialog.open(ConfirmModalDialogComponent, {
+      data: { title: 'Confirmar Exclusão?', 
+        message: 'Tem certeza que deseja deletar esta tarefa?',
+        confirmButton: 'Deletar',
+        cancelButton: 'Cancelar'
+      },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+       
+        this.tasksService.deletarTask(tarefa).subscribe({
+          next: () => console.log('Tarefa excluída com sucesso'),
+          error: () => console.log('Erro ao excluir a tarefa'),
         })
       }
     });
