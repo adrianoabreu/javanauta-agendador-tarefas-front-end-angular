@@ -14,10 +14,11 @@ interface TasksResponse {
   statusNotificacaoEnum: 'PENDENTE' | 'NOTIFICADO' | 'CANCELADO'
 }
 
-interface TasksPayload {
+export interface TasksPayload {
+  id?: string,
   nomeTarefa: string,
   descricao: string,
-  dataCriacao: string
+  dataEvento: string
 }
 
 @Injectable({
@@ -55,8 +56,15 @@ export class TasksService {
     )
   }
 
-  editTask(id: string, body: TasksPayload): Observable<TasksResponse> {
+  editTask(id: string | undefined, body: TasksPayload): Observable<TasksResponse> {
     return this.http.put<TasksResponse>(`${this.apiUrl}/tarefas?id=${id}`, body, { headers: this.getHeaders() })
+    .pipe(
+      tap(() => this.loadTasks())
+    )
+  }
+
+  deletarTask(id: string): Observable<TasksResponse> {
+    return this.http.delete<TasksResponse>(`${this.apiUrl}/tarefas?id=${id}`, { headers: this.getHeaders() })
     .pipe(
       tap(() => this.loadTasks())
     )
