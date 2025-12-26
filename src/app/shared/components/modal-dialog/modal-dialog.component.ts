@@ -20,7 +20,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 export interface DialogField {
   name: string;
   label: string;
-  value?: string | number;
+  value?: string | number | Date;
   button?: { icon: string, callback: (value: string, dialogRef: MatDialogRef<ModalDialogComponent>) => void }
   type?: 'text' | 'number' | 'date' | 'time' | 'datetime';
   validators?: any[]
