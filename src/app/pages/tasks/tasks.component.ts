@@ -33,7 +33,19 @@ export class TasksComponent {
     const dataFormatada = new Date (ano, mes -1, dia, hora, minuto)
     const tempoFormatado = new Date (ano, mes -1, dia, hora, minuto)
 
-    return {dataFormatada, tempoFormatado}
+    return { dataFormatada, tempoFormatado }
+
+  }
+
+  normalizarDataEventoString(dataEvento: string){
+    const [data, tempo] = dataEvento.split(' ');
+    const [dia, mes, ano] = data.split('-');
+    const [hora, minuto] = tempo.split(':');
+
+    const dataString = `${dia}/${mes}/${ano}`
+    const tempoString = `${hora}:${minuto}`
+
+    return { dataString, tempoString }
 
   }
 
