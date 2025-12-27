@@ -1,4 +1,4 @@
-<section class="tasks-component">
+<section class="tasks-component" [class.empty]="!hasTasks()">
 
     @if(!hasTasks()) {
     <mat-card class="tasks-card" appearance="outlined">
@@ -13,11 +13,12 @@
     @else {
     <mat-accordion class="tasks-accordion full-width">
         @for (task of tasks(); track task.id) {
-        <mat-expansion-panel (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
+        <mat-expansion-panel class="tasks-expansion-panel" (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
             <mat-expansion-panel-header>
-                <mat-panel-title>{{task.nomeTarefa}}</mat-panel-title>
+                <mat-panel-title class="tasks-title">{{task.nomeTarefa}}</mat-panel-title>
                 <mat-panel-description>
-                    {{task.dataEvento}}
+                    <mat-icon class="tasks-icon">calendar_month</mat-icon>{{normalizarDataEventoString(task.dataEvento).dataString}}
+                    <mat-icon class="tasks-icon">schedule</mat-icon>{{normalizarDataEventoString(task.dataEvento).tempoString}}
                 </mat-panel-description>
                 <button class="task-action-button" mat-icon-button matSuffix (click)="editarTarefa(task)">
                     <mat-icon>edit</mat-icon>
